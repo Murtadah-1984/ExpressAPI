@@ -1,0 +1,30 @@
+version: '3'
+services:
+  node-app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./app:/app
+    depends_on:
+      - mysql
+    restart: always
+
+  mysql:
+    image: mysql:8.2
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql-data:
